@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Jogo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <style>
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #a0d4ff, #cce7ff);
+      color: #333;
+      overflow: hidden;
+      animation: backgroundAnimation 10s infinite alternate;
+      touch-action: manipulation;
+    }
+    @keyframes backgroundAnimation {
+      0% { background: linear-gradient(135deg, #a0d4ff, #cce7ff); }
+      100% { background: linear-gradient(135deg, #cce7ff, #a0d4ff); }
+    }
+    .container {
+      position: relative;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      max-width: 400px;
+      width: 100%;
+      transition: transform 0.3s;
+    }
+    .container:hover {
+      transform: scale(1.05);
+    }
+    h1 {
+      font-size: 2.5em;
+      color: #4da6ff;
+      margin-bottom: 15px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    }
+    button {
+      font-size: 1.2em;
+      padding: 10px 20px;
+      cursor: pointer;
+      border: none;
+      border-radius: 25px;
+      background: #4da6ff;
+      color: #fff;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+      margin-top: 20px;
+    }
+    button:hover {
+      background: #80bfff;
+      transform: scale(1.1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    .message, .pix-screen {
+      font-size: 1.2em;
+      color: #333;
+      margin-top: 20px;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+    .show {
+      display: block;
+      opacity: 1;
+    }
+    .pix-info {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #4da6ff;
+    }
+    .gif {
+      width: 100px;
+      height: auto;
+      margin-top: 20px;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    .game-image {
+      width: 100%;
+      height: auto;
+      margin: 20px 0;
+    }
+    .hidden {
+      display: none;
+    }
+    .gif-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .corner-image-container {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      display: flex;
+      align-items: center;
+    }
+    .corner-image {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    .corner-text {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #4da6ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Imagem e texto no canto superior esquerdo da área branca -->
+    <div class="corner-image-container">
+      <img class="corner-image" src="https://i.postimg.cc/PJbsyHxN/1727591525384-1.png" alt="Imagem circular no canto superior esquerdo">
+    </div>
+
+    <h1 id="title">Mini Jogo</h1>
+    <img id="gameImage" class="game-image" src="https://i.postimg.cc/XqN9sxhC/Screenshot-20241028-174913-Google.jpg" alt="Imagem do Mini Jogo">
+    <button id="actionButton" onclick="showMessage()">Jogar</button>
+    <div class="message" id="message">
+      <img class="gif" src="https://i.postimg.cc/90ysBm6M/die-death.gif" alt="GIF do jogo">
+      <p>Passa o Pix!</p>
+      <p class="pix-info">Chave Pix: spacebloxpayments@gmail.com</p>
+      <button id="backButton" onclick="showPixScreen()">Voltar</button>
+    </div>
+    <!-- Terceira Interface: Tela "Passa o Pix!!!!" -->
+    <div class="pix-screen" id="pixScreen">
+      <h1>Passa o Pix!!!!</h1>
+      <div class="gif-container">
+        <img class="gif" src="https://i.postimg.cc/90ysBm6M/die-death.gif" alt="Imagem do Pix Esquerda">
+        <img class="gif" src="https://i.postimg.cc/90ysBm6M/die-death.gif" alt="Imagem do Pix Central">
+        <img class="gif" src="https://i.postimg.cc/90ysBm6M/die-death.gif" alt="Imagem do Pix Direita">
+      </div>
+      <p class="pix-info">Chave Pix: spacebloxpayments@gmail.com</p>
+    </div>
+  </div>
+
+  <script>
+    function showMessage() {
+      const message = document.getElementById('message');
+      const gameImage = document.getElementById('gameImage');
+      const title = document.getElementById('title');
+      const actionButton = document.getElementById('actionButton');
+      
+      message.classList.toggle('show');
+      gameImage.classList.toggle('hidden');
+
+      if (message.classList.contains('show')) {
+        title.textContent = 'Game Over';
+        actionButton.style.display = 'none';
+      } else {
+        title.textContent = 'Mini Jogo';
+        actionButton.style.display = 'block';
+      }
+    }
+
+    function showPixScreen() {
+      // Oculta a segunda interface e mostra a terceira
+      document.getElementById('message').classList.remove('show');
+      document.getElementById('pixScreen').classList.add('show');
+    }
+  </script>
+</body>
+</html>
